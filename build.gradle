@@ -2,9 +2,10 @@ plugins {
     id 'org.springframework.boot' version '2.7.1'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
+    id 'io.openapiprocessor.openapi-processor' version '2022.1'
 }
 
-group = 'com.verint'
+group = 'verint'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
 
@@ -14,9 +15,31 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
 tasks.named('test') {
     useJUnitPlatform()
 }
+
+openapiProcessor {
+    spring {
+        processor 'io.openapiprocessor:openapi-processor-spring:2022.3'
+        apiPath "$projectDir/src/main/resources/to-do-openapi.yaml"
+        targetDir "$projectDir/build/openapi"
+        mapping "$projectDir/src/main/resources/mapping.yaml"
+        showWarnings true
+    }
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs "$projectDir/build/openapi"
+        }
+    }
+}
+
+compileJava.dependsOn('processSpring')
