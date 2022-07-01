@@ -1,0 +1,34 @@
+openapi: 3.0.3
+info:
+  title: ToDo
+  description: ToDo api
+  version: 1.0.0
+paths:
+  /todos:
+    get:
+      tags:
+        - todos
+      description: return all of the todos
+      responses:
+        '200':
+          description: all of the todos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ToDo'
+
+components:
+  schemas:
+    ToDo:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+
+
+
