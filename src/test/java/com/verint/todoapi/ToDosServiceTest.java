@@ -1,53 +1,58 @@
 package com.verint.todoapi;
 
 import com.verint.todoapi.model.ToDoDTO;
-import org.junit.jupiter.api.BeforeEach;
+import lombok.RequiredArgsConstructor;
+import org.hamcrest.Description;
+import org.hamcrest.TypeSafeMatcher;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
-import static org.junit.jupiter.api.Assertions.*;
-
+import static com.verint.todoapi.ToDosServiceTest.ToDoMatcher.toDo;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.contains;
 
 class ToDosServiceTest {
 
-    ToDosService toDosService;
+    @Test
+    void getAll_shouldReturnSingleToDo() {
+        ToDosService toDosService = new ToDosService();
 
-    @BeforeEach
-    void setUp(){
-        toDosService = new ToDosService();
+        List<ToDoDTO> toDoDTOList = toDosService.getAll();
+
+        //matcher construction
+        assertThat(toDoDTOList, contains(toDo(1L, "James S")));
     }
 
-    @Test
-    void getAll_withToDosEmpty_emptyList() {
-        assertSame(Collections.emptyList(), toDosService.getAll());
-    }
+    @RequiredArgsConstructor
+    static class ToDoMatcher extends TypeSafeMatcher<ToDoDTO> {
 
-    @Test
-    void setToDos_testDTO_ListTestDTO() {
-        ToDoDTO testDTO = new ToDoDTO();
-        testDTO.setId(Long.getLong("1"));
-        testDTO.setName("James");
-        List<ToDoDTO> testList = new ArrayList<>();
-        testList.add(testDTO);
+        private final Long id;
+        private final String name;
 
-        toDosService.setToDos(testList);
+        public static ToDoMatcher toDo(Long id, String name) {
+            return new ToDoMatcher(id, name);
+        }
 
-        assertSame(toDosService.getToDos(), testList);
-    }
+        @Override
+        protected boolean matchesSafely(ToDoDTO item) {
+            return Objects.equals(id, item.getId()) &&
+                    Objects.equals(name, item.getName());
+        }
 
-    @Test
-    void getAll_withToDos_toDosArray() {
-        ToDoDTO testDTO = new ToDoDTO();
-        testDTO.setId(Long.getLong("1"));
-        testDTO.setName("James");
-        List<ToDoDTO> testList = new ArrayList<>();
-        testList.add(testDTO);
+        @Override
+        protected void describeMismatchSafely(ToDoDTO item, Description mismatchDescription) {
+            describe(mismatchDescription, item.getId(), item.getName());
+        }
 
-        toDosService.setToDos(testList);
+        @Override
+        public void describeTo(Description description) {
+            describe(description, id, name);
+        }
 
-        assertSame(testList, toDosService.getAll());
+        private void describe(Description description, Long id, String name) {
+            description.appendText("<ToDoDTO(id=").appendValue(id).appendText(", name=").appendValue(name).appendText(")>");
+        }
     }
 }
