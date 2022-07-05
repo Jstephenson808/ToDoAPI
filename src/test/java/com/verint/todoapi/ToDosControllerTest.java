@@ -25,7 +25,7 @@ class ToDosControllerTest {
 
     @Test
     void getToDos_callsService() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/to-dos"));
+        mockMvc.perform(MockMvcRequestBuilders.get("/todos"));
 
         verify(toDosService).getAll();
     }
