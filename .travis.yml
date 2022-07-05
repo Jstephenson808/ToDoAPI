@@ -1,2 +1,7 @@
 language: java
+install: skip
+
 jdk: oraclejdk17
+
+script:
+  - ./gradlew build --scan -s
