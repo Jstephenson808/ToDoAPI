@@ -12,3 +12,4 @@ deploy:
   app: fela-kuti
   on:
     branch: main
+    jdk: oraclejdk17
