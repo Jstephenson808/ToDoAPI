@@ -24,7 +24,4 @@ public class ToDosController implements TodosApi{
         return ResponseEntity.ok(toDosService.getAll());
     }
 
-    public void unreachable(){
-
-    }
 }
