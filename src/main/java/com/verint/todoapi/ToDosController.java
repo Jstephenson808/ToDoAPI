@@ -23,4 +23,5 @@ public class ToDosController implements TodosApi{
     public ResponseEntity<List<ToDoDTO>> getTodos() {
         return ResponseEntity.ok(toDosService.getAll());
     }
+
 }
