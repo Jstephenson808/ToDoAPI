@@ -9,7 +9,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @Generated
 @SpringBootApplication
-@EnableJpaRepositories("com.verint.todoapi")
 public class ToDoApiApplication {
 
     public static void main(String[] args) {
