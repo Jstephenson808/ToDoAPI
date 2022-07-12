@@ -1,13 +1,25 @@
 package com.verint.todoapi;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-@RequiredArgsConstructor
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+/*
+ what is the best approach with the constructors?
+ also had to remove final fields
+ "no-args constructor required by JPA spec"
+ */
+@Entity
+@NoArgsConstructor
 @Getter
 @Setter
 public class ToDo {
-    private final Long ID;
-    private final String name;
+
+    @Id
+    private Long ID;
+
+    @Column(nullable = false)
+    private String name;
 }

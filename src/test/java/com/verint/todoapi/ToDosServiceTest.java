@@ -22,7 +22,10 @@ class ToDosServiceTest {
     @Test
     void getAll_shouldReturnSingleToDo() {
         ToDosService toDosService = new ToDosService(toDoRepository);
-        when(toDoRepository.findAll()).thenReturn(List.of(new ToDo(1L,"James S")));
+        ToDo toDo = new ToDo();
+        toDo.setID(1L);
+        toDo.setName("James S");
+        when(toDoRepository.findAll()).thenReturn(List.of(toDo));
         List<ToDoDTO> toDoDTOList = toDosService.getAll();
 
         //matcher construction

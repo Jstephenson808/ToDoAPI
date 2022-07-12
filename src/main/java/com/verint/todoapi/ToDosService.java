@@ -19,7 +19,6 @@ public class ToDosService {
             toDoDTO.setName(ToDo.getName());
             return toDoDTO;
         }).toList();
-
     }
 
 }
