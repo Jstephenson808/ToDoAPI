@@ -2,7 +2,6 @@ package com.verint.todoapi;
 
 import com.verint.todoapi.model.ToDoDTO;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
