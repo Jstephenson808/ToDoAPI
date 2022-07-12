@@ -5,6 +5,9 @@ import lombok.RequiredArgsConstructor;
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeMatcher;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 import java.util.Objects;
@@ -12,13 +15,18 @@ import java.util.Objects;
 import static com.verint.todoapi.ToDosServiceTest.ToDoMatcher.toDo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
+import static org.mockito.Mockito.when;
 
 class ToDosServiceTest {
 
+    @Mock
+    private ToDoRepository toDoRepository;
+
+    @ExtendWith(MockitoExtension.class)
     @Test
     void getAll_shouldReturnSingleToDo() {
-        ToDosService toDosService = new ToDosService();
-
+        ToDosService toDosService = new ToDosService(toDoRepository);
+        when(toDoRepository.findAll()).thenReturn(List.of(new ToDo(1L,"James S")));
         List<ToDoDTO> toDoDTOList = toDosService.getAll();
 
         //matcher construction
