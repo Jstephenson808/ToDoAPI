@@ -42,7 +42,8 @@ jacocoTestCoverageVerification {
                 minimum = 1.0
             }
             excludes = [
-                    'com.verint.todoappapi.ToDoAppApiApplication'
+                    'com.verint.todoappapi.ToDoAppApiApplication',
+                    'com.verint.todoappapi.ToDoConfig'
             ]
         }
     }
