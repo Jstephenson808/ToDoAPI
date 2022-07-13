@@ -24,8 +24,7 @@ public class ToDosController implements TodosApi {
 
     @Override
     public ResponseEntity<ToDoDTO> postTodos(TodosPostRequestBodyDTO body) {
-        toDosService.save();
-        return null;
+        return ResponseEntity.ok(toDosService.save(body));
     }
 
 }

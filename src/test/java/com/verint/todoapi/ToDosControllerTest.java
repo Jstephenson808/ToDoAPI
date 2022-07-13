@@ -1,16 +1,12 @@
 package com.verint.todoapi;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.verint.todoapi.model.TodosPostRequestBodyDTO;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.json.GsonJsonParser;
-import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestEntityManager;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.http.converter.json.GsonHttpMessageConverter;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
@@ -47,13 +43,41 @@ class ToDosControllerTest {
 
     @Test
     void postToDo_callsService() throws Exception{
-        TodosPostRequestBodyDTO testContent = new TodosPostRequestBodyDTO();
-        testContent.setName("James S");
-        ObjectMapper mapper = new ObjectMapper();
-        String jsonString = mapper.writeValueAsString(testContent);
+        ArgumentCaptor<TodosPostRequestBodyDTO> argumentCaptor = ArgumentCaptor.forClass(TodosPostRequestBodyDTO.class);
+        String jsonString = ToDosPostRequestBodyDTOBuilder.generatePostRequestJson("James S");
+
         mockMvc.perform(MockMvcRequestBuilders.post("/todos").contentType(MediaType.APPLICATION_JSON).content(jsonString));
 
-        verify(toDosService).save();
+        verify(toDosService).save(argumentCaptor.capture());
+    }
+
+    @Test
+    void postToDo_callsServiceWithDTOGiven() throws Exception{
+        ArgumentCaptor<TodosPostRequestBodyDTO> argumentCaptor = ArgumentCaptor.forClass(TodosPostRequestBodyDTO.class);
+        TodosPostRequestBodyDTO testContent = ToDosPostRequestBodyDTOBuilder.generatePostRequestDTO("James S");
+        String jsonString = ToDosPostRequestBodyDTOBuilder.generatePostRequestJson("James S");
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/todos")
+                .contentType(MediaType.APPLICATION_JSON).content(jsonString));
+
+        verify(toDosService).save(argumentCaptor.capture());
+        TodosPostRequestBodyDTO dto = argumentCaptor.getValue();
+        assert(dto.getName().equals(testContent.getName()));
+    }
+
+    @Test
+    void postToDo_returnsToDoDTO() throws Exception{
+        ArgumentCaptor<TodosPostRequestBodyDTO> argumentCaptor = ArgumentCaptor.forClass(TodosPostRequestBodyDTO.class);
+        String postedJsonString = ToDosPostRequestBodyDTOBuilder.generatePostRequestJson("James S");
+        String returnDtoJson = ToDoDTOBuilder.generateToDoDTOJson(1L,"James S");
+
+        when(toDosService.save(argumentCaptor.capture())).thenReturn(ToDoDTOBuilder.generateToDoDTO(1L,"James S"));
+
+        mockMvc.perform(MockMvcRequestBuilders
+                .post("/todos")
+                .contentType(MediaType.APPLICATION_JSON).content(postedJsonString))
+                .andExpect(content().json(returnDtoJson));
+
     }
 
 }
