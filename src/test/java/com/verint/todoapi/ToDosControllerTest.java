@@ -1,11 +1,16 @@
 package com.verint.todoapi;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.verint.todoapi.model.TodosPostRequestBodyDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.json.GsonJsonParser;
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestEntityManager;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
+import org.springframework.http.converter.json.GsonHttpMessageConverter;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
@@ -38,6 +43,17 @@ class ToDosControllerTest {
         when(toDosService.getAll()).thenReturn(Collections.emptyList());
 
         mockMvc.perform(MockMvcRequestBuilders.get("/todos")).andExpect(content().json("[]"));
+    }
+
+    @Test
+    void postToDo_callsService() throws Exception{
+        TodosPostRequestBodyDTO testContent = new TodosPostRequestBodyDTO();
+        testContent.setName("James S");
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = mapper.writeValueAsString(testContent);
+        mockMvc.perform(MockMvcRequestBuilders.post("/todos").contentType(MediaType.APPLICATION_JSON).content(jsonString));
+
+        verify(toDosService).save();
     }
 
 }

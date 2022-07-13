@@ -18,6 +18,28 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/ToDo'
+    post:
+      tags:
+        - todos
+      description: create a new todo in the database and return it
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        '201':
+          description: new todo successfully created
+          content:
+            application/json:
+              schema: {
+                $ref: '#/components/schemas/ToDo'
+              }
+
 
 components:
   schemas:
