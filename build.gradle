@@ -26,6 +26,10 @@ test {
     finalizedBy jacocoTestReport
 }
 
+jacoco{
+
+}
+
 jacocoTestReport {
     dependsOn test
     reports {
@@ -43,7 +47,8 @@ jacocoTestCoverageVerification {
             }
             excludes = [
                     'com.verint.todoappapi.ToDoAppApiApplication',
-                    'com.verint.todoappapi.ToDoConfig'
+                    'com.verint.todoappapi.ToDoConfig',
+                    'com.verint.todoappapi.ToDoMapperImpl'
             ]
         }
     }
@@ -82,6 +87,7 @@ sourceSets {
     main {
         java {
             srcDirs "$projectDir/build/openapi"
+            srcDirs "$projectDir/build/generated/sources"
         }
     }
 }

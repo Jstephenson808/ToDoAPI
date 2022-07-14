@@ -17,20 +17,19 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-class ToDosServiceTest {
+// todo change name for task
+@ExtendWith(MockitoExtension.class)
+class ToDoServiceTest {
 
     @Mock
     private ToDoRepository toDoRepository;
 
-    @ExtendWith(MockitoExtension.class)
     @Test
     void getAll_shouldReturnSingleToDo() {
-        ToDosService toDosService = new ToDosService(toDoRepository, getMapper(ToDoMapper.class));
-        ToDo toDo = new ToDo();
-        toDo.setId(1L);
-        toDo.setName("James S");
+        ToDoService toDoService = new ToDoService(toDoRepository, getMapper(ToDoMapper.class));
+        ToDo toDo = new ToDo(1L, "James S");
         when(toDoRepository.findAll()).thenReturn(List.of(toDo));
-        List<ToDoDTO> toDoDTOList = toDosService.getAll();
+        List<ToDoDTO> toDoDTOList = toDoService.getAll();
 
         //matcher construction
         assertThat(toDoDTOList, contains(ToDoDTOMatcher.toDoDTO(1L, "James S")));
@@ -40,17 +39,26 @@ class ToDosServiceTest {
 
     @Test
     void create_shouldCallSave(){
+        ToDoService toDoService = new ToDoService(toDoRepository, getMapper(ToDoMapper.class));
         ArgumentCaptor<ToDo> argumentCaptor = ArgumentCaptor.forClass(ToDo.class);
-        ToDosService toDosService = new ToDosService(toDoRepository, getMapper(ToDoMapper.class));
-        ToDoDTO testToDoDTO = ToDoBuilder.builder()
-                .name("James S")
-                .build();
         when(toDoRepository.save(any()))
                 .thenReturn(new ToDo(1L,"James S"));
 
-        verify(toDoRepository.save(argumentCaptor.capture()));
+        toDoService.create(ToDoDtoBuilder.builder()
+                .name("James S")
+                .build());
+        verify(toDoRepository).save(argumentCaptor.capture());
         assertThat(argumentCaptor.getValue(), is(ToDoMatcher.toDo(null, "James S")));
     }
 
+    @Test
+    void create_shouldReturnCreatedToDoDto(){
+        ToDoService toDoService = new ToDoService(toDoRepository, getMapper(ToDoMapper.class));
+        when(toDoRepository.save(any())).thenReturn(new ToDo(2L, "Get some milk"));
 
+        ToDoDTO createdToDo = toDoService.create(ToDoDtoBuilder.builder()
+                                                                .name("Get some milk")
+                                                                .build());
+        assertThat(createdToDo, is(ToDoDTOMatcher.toDoDTO(2L,"Get some milk")));
+    }
 }

@@ -7,27 +7,22 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class ToDosService {
+public class ToDoService {
 
     private final ToDoRepository toDoRepository;
     private final ToDoMapper toDoMapper;
 
     @Autowired
-    public ToDosService(ToDoRepository toDoRepository, ToDoMapper toDoMapper) {
+    public ToDoService(ToDoRepository toDoRepository, ToDoMapper toDoMapper) {
         this.toDoRepository = toDoRepository;
         this.toDoMapper = toDoMapper;
     }
 
     public List<ToDoDTO> getAll() {
-        return toDoRepository.findAll().stream().map(ToDo -> {
-            ToDoDTO toDoDTO = new ToDoDTO();
-            toDoDTO.setId(ToDo.getId());
-            toDoDTO.setName(ToDo.getName());
-            return toDoDTO;
-        }).toList();
+        return toDoRepository.findAll().stream().map(ToDo -> toDoMapper.entityToDto(ToDo)).toList();
     }
 
     public ToDoDTO create(ToDoDTO postedToDo) {
-        return null;
+        return toDoMapper.entityToDto(toDoRepository.save(toDoMapper.dtoToEntity(postedToDo)));
     }
 }

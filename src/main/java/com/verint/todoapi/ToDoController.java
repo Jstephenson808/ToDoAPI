@@ -12,18 +12,18 @@ import java.util.List;
 @CrossOrigin
 @RestController
 @RequiredArgsConstructor
-public class ToDosController implements TodosApi {
+public class ToDoController implements TodosApi {
 
-    private final ToDosService toDosService;
+    private final ToDoService toDoService;
 
     @Override
     public ResponseEntity<List<ToDoDTO>> getToDos() {
-        return ResponseEntity.ok(toDosService.getAll());
+        return ResponseEntity.ok(toDoService.getAll());
     }
 
     @Override
     public ResponseEntity<ToDoDTO> createToDo(ToDoDTO body) {
-        return ResponseEntity.ok(toDosService.create(body));
+        return ResponseEntity.ok(toDoService.create(body));
     }
 
 }

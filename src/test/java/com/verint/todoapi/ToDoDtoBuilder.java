@@ -6,7 +6,7 @@ import com.verint.todoapi.model.ToDoDTO;
 import lombok.Builder;
 
 // ToDo name of this class
-public class ToDoBuilder {
+public class ToDoDtoBuilder {
 
     @Builder
     public static ToDoDTO generateToDo(Long id, String name){
