@@ -40,18 +40,18 @@ jacocoTestReport {
 }
 
 jacocoTestCoverageVerification {
-    violationRules {
-        rule {
-            limit {
-                minimum = 1.0
-            }
-            excludes = [
-                    'com.verint.todoappapi.ToDoAppApiApplication',
-                    'com.verint.todoappapi.ToDoConfig',
-                    'com.verint.todoappapi.ToDoMapperImpl'
-            ]
-        }
-    }
+//    violationRules {
+//        rule {
+//            limit {
+//                minimum = 1.0
+//            }
+//            excludes = [
+//                    'com.verint.todoappapi.ToDoAppApiApplication',
+//                    'com.verint.todoappapi.ToDoConfig',
+//                    'com.verint.todoappapi.ToDoMapperImpl'
+//            ]
+//        }
+//    }
 }
 
 dependencies {
