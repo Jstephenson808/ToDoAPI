@@ -23,7 +23,7 @@ public class ToDosController implements TodosApi {
 
     @Override
     public ResponseEntity<ToDoDTO> createToDo(ToDoDTO body) {
-        return ResponseEntity.ok(toDosService.save(body));
+        return ResponseEntity.ok(toDosService.create(body));
     }
 
 }

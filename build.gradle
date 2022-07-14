@@ -52,6 +52,8 @@ jacocoTestCoverageVerification {
 dependencies {
     compileOnly 'org.projectlombok:lombok'
 
+    implementation 'org.mapstruct.extensions.spring:mapstruct-spring-annotations:0.1.1'
+    implementation 'org.mapstruct:mapstruct:1.5.1.Final'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'com.h2database:h2'

@@ -8,20 +8,21 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 
-import static com.verint.todoapi.Matchers.ToDoMatcher.generateToDoMatcher;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
+import static org.mapstruct.factory.Mappers.getMapper;
 import static org.mockito.Mockito.when;
 
 class ToDosServiceTest {
 
     @Mock
     private ToDoRepository toDoRepository;
+    private ToDoMapper toDoMapper = getMapper(ToDoMapper.class);
 
     @ExtendWith(MockitoExtension.class)
     @Test
     void getAll_shouldReturnSingleToDo() {
-        ToDosService toDosService = new ToDosService(toDoRepository);
+        ToDosService toDosService = new ToDosService(toDoRepository, toDoMapper);
         ToDo toDo = new ToDo();
         toDo.setID(1L);
         toDo.setName("James S");
@@ -29,7 +30,17 @@ class ToDosServiceTest {
         List<ToDoDTO> toDoDTOList = toDosService.getAll();
 
         //matcher construction
-        assertThat(toDoDTOList, contains(generateToDoMatcher(1L, "James S")));
+        assertThat(toDoDTOList, contains(ToDoDTOMatcher.toDoDTO(1L, "James S")));
     }
+
+    // create a class that can map from DTO -> entity
+
+    @Test
+    void create_shouldReturnDtoWithId(){
+        ToDosService toDosService = new ToDosService(toDoRepository, toDoMapper);
+        ToDoDTO toDoDTO = ToDoBuilder.generateToDo(1L,"James S");
+
+    }
+
 
 }

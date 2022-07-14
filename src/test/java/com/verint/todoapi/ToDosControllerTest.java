@@ -10,11 +10,11 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Collections;
 
-import static com.verint.todoapi.Matchers.*;
-import static com.verint.todoapi.Matchers.ToDoMatcher.*;
 import static com.verint.todoapi.ToDoBuilder.*;
 import static com.verint.todoapi.ToDoBuilder.generateToDoDTOJson;
+import static com.verint.todoapi.ToDoDTOMatcher.toDoDTO;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -55,7 +55,7 @@ class ToDosControllerTest {
 
         mockMvc.perform(post("/todos").contentType(APPLICATION_JSON).content(jsonString));
 
-        verify(toDosService).save(argumentCaptor.capture());
+        verify(toDosService).create(argumentCaptor.capture());
     }
 
     @Test
@@ -68,8 +68,8 @@ class ToDosControllerTest {
                 .contentType(APPLICATION_JSON)
                 .content(jsonString));
 
-        verify(toDosService).save(toDoCaptor.capture());
-        assertThat(toDoCaptor.getValue(), generateToDoMatcher(null,"James S"));
+        verify(toDosService).create(toDoCaptor.capture());
+        assertThat(toDoCaptor.getValue(), is(toDoDTO(null,"James S")));
     }
 
     @Test
@@ -79,7 +79,7 @@ class ToDosControllerTest {
         //ToDo can you extract this out to the matcher?
         String returnDtoJson = generateToDoDTOJson(1L,"James S");
 
-        when(toDosService.save(argumentCaptor.capture())).thenReturn(generateToDo(1L,"James S"));
+        when(toDosService.create(argumentCaptor.capture())).thenReturn(generateToDo(1L,"James S"));
 
         mockMvc.perform(post("/todos")
                 .contentType(APPLICATION_JSON).content(postedJsonString))

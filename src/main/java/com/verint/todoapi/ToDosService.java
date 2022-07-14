@@ -11,6 +11,7 @@ import java.util.List;
 public class ToDosService {
 
     private final ToDoRepository toDoRepository;
+    private final ToDoMapper toDoMapper;
 
     public List<ToDoDTO> getAll() {
         return toDoRepository.findAll().stream().map(ToDo -> {
@@ -21,7 +22,7 @@ public class ToDosService {
         }).toList();
     }
 
-    public ToDoDTO save(ToDoDTO postedToDo) {
+    public ToDoDTO create(ToDoDTO postedToDo) {
         return null;
     }
 }
