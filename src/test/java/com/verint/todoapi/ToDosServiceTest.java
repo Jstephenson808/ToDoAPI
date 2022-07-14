@@ -8,7 +8,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 
-import static com.verint.todoapi.Matchers.ToDoMatcher.toDo;
+import static com.verint.todoapi.Matchers.ToDoMatcher.generateToDoMatcher;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static org.mockito.Mockito.when;
@@ -29,7 +29,7 @@ class ToDosServiceTest {
         List<ToDoDTO> toDoDTOList = toDosService.getAll();
 
         //matcher construction
-        assertThat(toDoDTOList, contains(toDo(1L, "James S")));
+        assertThat(toDoDTOList, contains(generateToDoMatcher(1L, "James S")));
     }
 
 }

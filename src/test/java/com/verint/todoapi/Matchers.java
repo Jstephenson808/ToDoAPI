@@ -7,6 +7,7 @@ import org.hamcrest.TypeSafeMatcher;
 
 import java.util.Objects;
 
+// ToDo is this wise?
 public class Matchers {
     @RequiredArgsConstructor
     public static class ToDoMatcher extends TypeSafeMatcher<ToDoDTO> {
@@ -14,7 +15,7 @@ public class Matchers {
         private final Long id;
         private final String name;
 
-        public static ToDoMatcher toDo(Long id, String name) {
+        public static ToDoMatcher generateToDoMatcher(Long id, String name) {
             return new ToDoMatcher(id, name);
         }
 

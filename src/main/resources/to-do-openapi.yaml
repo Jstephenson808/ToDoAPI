@@ -6,6 +6,7 @@ info:
 paths:
   /todos:
     get:
+      operationId: getToDos
       tags:
         - todos
       description: return all of the todos
@@ -19,6 +20,7 @@ paths:
                 items:
                   $ref: '#/components/schemas/ToDo'
     post:
+      operationId: createToDo
       tags:
         - todos
       description: create a new todo in the database and return it
@@ -27,18 +29,15 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                name:
-                  type: string
+              $ref: '#/components/schemas/ToDo'
       responses:
         '201':
           description: new todo successfully created
           content:
             application/json:
-              schema: {
+              schema:
                 $ref: '#/components/schemas/ToDo'
-              }
+
 
 
 components:
