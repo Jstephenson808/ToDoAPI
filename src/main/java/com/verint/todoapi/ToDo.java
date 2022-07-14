@@ -2,9 +2,7 @@ package com.verint.todoapi;
 
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /*
  what is the best approach with the constructors?
@@ -13,12 +11,15 @@ import javax.persistence.Id;
  */
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 public class ToDo {
 
     @Id
-    private Long ID;
+    @Column(name="id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private Long id;
 
     @Column(nullable = false)
     private String name;
