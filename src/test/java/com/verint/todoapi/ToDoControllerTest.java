@@ -39,7 +39,7 @@ class ToDoControllerTest {
 
         verify(toDoService).getAll();
     }
-    
+
     @Test
     void getToDos_noToDos_emptyArray() throws Exception {
         when(toDoService.getAll()).thenReturn(Collections.emptyList());
