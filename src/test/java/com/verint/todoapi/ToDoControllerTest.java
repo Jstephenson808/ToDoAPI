@@ -10,8 +10,8 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Collections;
 
-import static com.verint.todoapi.ToDoDtoBuilder.*;
-import static com.verint.todoapi.ToDoDtoBuilder.generateToDoDTOJson;
+import static com.verint.todoapi.ToDoDTOBuilder.*;
+import static com.verint.todoapi.ToDoDTOBuilder.generateToDoDTOJson;
 import static com.verint.todoapi.ToDoDTOMatcher.toDoDTO;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -39,30 +39,21 @@ class ToDoControllerTest {
 
         verify(toDoService).getAll();
     }
-
-    // methodUnderTest_scenario_expectedResult
+    
     @Test
     void getToDos_noToDos_emptyArray() throws Exception {
         when(toDoService.getAll()).thenReturn(Collections.emptyList());
 
+        // todo status code
         mockMvc.perform(get("/todos")).andExpect(content().json("[]"));
-    }
-
-    @Test
-    void postToDo_callsService() throws Exception{
-        ArgumentCaptor<ToDoDTO> argumentCaptor = ArgumentCaptor.forClass(ToDoDTO.class);
-        String jsonString = generateToDoDTOJson("James S");
-
-        mockMvc.perform(post("/todos").contentType(APPLICATION_JSON).content(jsonString));
-
-        verify(toDoService).create(argumentCaptor.capture());
     }
 
     @Test
     void postToDo_callsServiceWithDTOGiven() throws Exception{
         ArgumentCaptor<ToDoDTO> toDoCaptor = ArgumentCaptor.forClass(ToDoDTO.class);
-        //ToDoDTO testContent = builder().name("James S").build();
-        String jsonString = generateToDoDTOJson("James S");
+        String jsonString = """
+                           {"name":"James S"}
+                            """;
 
         mockMvc.perform(post("/todos")
                 .contentType(APPLICATION_JSON)
@@ -75,15 +66,22 @@ class ToDoControllerTest {
     @Test
     void postToDo_returnsToDoDTO() throws Exception{
         ArgumentCaptor<ToDoDTO> argumentCaptor = ArgumentCaptor.forClass(ToDoDTO.class);
-        String postedJsonString = generateToDoDTOJson("James S");
-        //ToDo can you extract this out to the matcher?
-        String returnDtoJson = generateToDoDTOJson(1L,"James S");
+//        String postedJsonString = """
+//                               {"name":"James S"}
+//                                """;
+//        String returnDtoJson = """
+//                           {"id":1,"name":"James S"}
+//                            """;
 
         when(toDoService.create(argumentCaptor.capture())).thenReturn(generateToDo(1L,"James S"));
 
         mockMvc.perform(post("/todos")
-                .contentType(APPLICATION_JSON).content(postedJsonString))
-                .andExpect(content().json(returnDtoJson));
+                .contentType(APPLICATION_JSON).content("""
+                                                        {"name":"James S"}
+                                                        """))
+                .andExpect(content().json("""
+                                             {"id":1,"name":"James S"}
+                                            """));
     }
 
 }

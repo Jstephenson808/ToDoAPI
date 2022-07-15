@@ -5,10 +5,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.verint.todoapi.model.ToDoDTO;
 import lombok.Builder;
 
-// ToDo name of this class
-public class ToDoDtoBuilder {
+public class ToDoDTOBuilder {
 
-    @Builder
+    @Builder(builderClassName = "ToDoDTOBuilderImpl")
     public static ToDoDTO generateToDo(Long id, String name){
         ToDoDTO dto = new ToDoDTO();
         dto.setName(name);

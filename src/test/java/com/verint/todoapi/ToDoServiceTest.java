@@ -44,7 +44,7 @@ class ToDoServiceTest {
         when(toDoRepository.save(any()))
                 .thenReturn(new ToDo(1L,"James S"));
 
-        toDoService.create(ToDoDtoBuilder.builder()
+        toDoService.create(ToDoDTOBuilder.builder()
                 .name("James S")
                 .build());
         verify(toDoRepository).save(argumentCaptor.capture());
@@ -56,7 +56,7 @@ class ToDoServiceTest {
         ToDoService toDoService = new ToDoService(toDoRepository, getMapper(ToDoMapper.class));
         when(toDoRepository.save(any())).thenReturn(new ToDo(2L, "Get some milk"));
 
-        ToDoDTO createdToDo = toDoService.create(ToDoDtoBuilder.builder()
+        ToDoDTO createdToDo = toDoService.create(ToDoDTOBuilder.builder()
                                                                 .name("Get some milk")
                                                                 .build());
         assertThat(createdToDo, is(ToDoDTOMatcher.toDoDTO(2L,"Get some milk")));

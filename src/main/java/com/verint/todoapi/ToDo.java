@@ -4,11 +4,6 @@ import lombok.*;
 
 import javax.persistence.*;
 
-/*
- what is the best approach with the constructors?
- also had to remove final fields
- "no-args constructor required by JPA spec"
- */
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
