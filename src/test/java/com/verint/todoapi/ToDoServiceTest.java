@@ -53,7 +53,7 @@ class ToDoServiceTest {
     }
 
     @Test
-    void create_shouldReturnCreatedToDoDto(){
+    void create_ToDoDTO_shouldReturnCreatedToDoDTO(){
         when(toDoRepository.save(any())).thenReturn(new ToDo(2L, "Get some milk"));
 
         ToDoDTO createdToDo = toDoService.create(ToDoDTOBuilder.builder()
