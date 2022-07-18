@@ -10,8 +10,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Collections;
 
-import static com.verint.todoapi.ToDoDTOBuilder.*;
-import static com.verint.todoapi.ToDoDTOBuilder.generateToDoDTOJson;
+import static com.verint.todoapi.ToDoDTOBuilder.generateToDo;
 import static com.verint.todoapi.ToDoDTOMatcher.toDoDTO;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -44,7 +43,6 @@ class ToDoControllerTest {
     void getToDos_noToDos_emptyArray() throws Exception {
         when(toDoService.getAll()).thenReturn(Collections.emptyList());
 
-        // todo status code
         mockMvc.perform(get("/todos")).andExpect(content().json("[]"));
     }
 
@@ -66,12 +64,6 @@ class ToDoControllerTest {
     @Test
     void postToDo_returnsToDoDTO() throws Exception{
         ArgumentCaptor<ToDoDTO> argumentCaptor = ArgumentCaptor.forClass(ToDoDTO.class);
-//        String postedJsonString = """
-//                               {"name":"James S"}
-//                                """;
-//        String returnDtoJson = """
-//                           {"id":1,"name":"James S"}
-//                            """;
 
         when(toDoService.create(argumentCaptor.capture())).thenReturn(generateToDo(1L,"James S"));
 
