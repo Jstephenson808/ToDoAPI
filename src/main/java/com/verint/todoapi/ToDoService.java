@@ -20,4 +20,8 @@ public class ToDoService {
     public ToDoDTO create(ToDoDTO postedToDo) {
         return toDoMapper.entityToDto(toDoRepository.save(toDoMapper.dtoToEntity(postedToDo)));
     }
+
+    public boolean delete(ToDoDTO toDoDTOToDelete) {
+        return true;
+    }
 }

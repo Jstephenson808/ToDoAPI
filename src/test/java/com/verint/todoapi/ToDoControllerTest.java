@@ -17,8 +17,7 @@ import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
 
@@ -47,7 +46,7 @@ class ToDoControllerTest {
     }
 
     @Test
-    void postToDo_callsServiceWithDTOGiven() throws Exception{
+    void postToDo_callsServiceCreateWithDTOGiven() throws Exception{
         ArgumentCaptor<ToDoDTO> toDoCaptor = ArgumentCaptor.forClass(ToDoDTO.class);
         String jsonString = """
                            {"name":"James S"}
@@ -74,6 +73,21 @@ class ToDoControllerTest {
                 .andExpect(content().json("""
                                              {"id":1,"name":"James S"}
                                             """));
+    }
+
+    @Test
+    void deleteToDo_callServiceDeleteWithIdGiven() throws Exception{
+        ArgumentCaptor<ToDoDTO> argumentCaptor = ArgumentCaptor.forClass(ToDoDTO.class);
+
+        when(toDoService.delete(argumentCaptor.capture())).thenReturn(true);
+
+        mockMvc.perform(delete("/todos")
+                .contentType(APPLICATION_JSON)
+                .content("""
+                         {data:{id:1}}
+                        """));
+        verify(toDoService).delete(argumentCaptor.capture());
+        assertThat(argumentCaptor.getValue(), is(toDoDTO(1L,null)));
     }
 
 }

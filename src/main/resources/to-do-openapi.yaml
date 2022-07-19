@@ -37,7 +37,22 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ToDo'
-
+    delete:
+      operationId: deleteToDo
+      tags:
+        - todos
+      description: delete todo with provided id from database
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ToDo'
+      responses:
+        '204':
+          description: todo deleted
+        '404':
+          description: todo not found
 
 
 components:
