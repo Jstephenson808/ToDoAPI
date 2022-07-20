@@ -6,7 +6,10 @@ import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.result.HeaderResultMatchers;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.Collections;
 
@@ -19,6 +22,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 
 
 @WebMvcTest
@@ -78,16 +82,30 @@ class ToDoControllerTest {
     @Test
     void deleteToDo_callServiceDeleteWithIdGiven() throws Exception{
         ArgumentCaptor<ToDoDTO> argumentCaptor = ArgumentCaptor.forClass(ToDoDTO.class);
-
         when(toDoService.delete(argumentCaptor.capture())).thenReturn(true);
 
         mockMvc.perform(delete("/todos")
                 .contentType(APPLICATION_JSON)
                 .content("""
-                         {data:{id:1}}
+                         {"id":1}
                         """));
+
         verify(toDoService).delete(argumentCaptor.capture());
         assertThat(argumentCaptor.getValue(), is(toDoDTO(1L,null)));
+    }
+
+    @Test
+    void deleteToDo_IDinDatabase_returnsSuccessMessage() throws Exception{
+        ArgumentCaptor<ToDoDTO> argumentCaptor = ArgumentCaptor.forClass(ToDoDTO.class);
+        when(toDoService.delete(argumentCaptor.capture())).thenReturn(true);
+        ResponseEntity response = ResponseEntity.noContent().build();
+
+        mockMvc.perform(delete("/todos")
+                .contentType(APPLICATION_JSON)
+                .content("""
+                         {"id":1}
+                        """)).andExpect(MockMvcResultMatchers.status().is(204));
+
     }
 
 }
