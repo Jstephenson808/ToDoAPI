@@ -21,7 +21,7 @@ public class ToDoService {
         return toDoMapper.entityToDto(toDoRepository.save(toDoMapper.dtoToEntity(postedToDo)));
     }
 
-    public boolean delete(ToDoDTO toDoDTOToDelete) {
+    public Boolean delete(ToDoDTO toDoDTOToDelete) {
         return true;
     }
 }
