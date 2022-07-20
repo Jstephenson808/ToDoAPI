@@ -21,6 +21,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 
@@ -95,17 +96,30 @@ class ToDoControllerTest {
     }
 
     @Test
-    void deleteToDo_IDinDatabase_returnsSuccessMessage() throws Exception{
+    void deleteToDo_idInDatabase_returnsSuccessMessage() throws Exception{
         ArgumentCaptor<ToDoDTO> argumentCaptor = ArgumentCaptor.forClass(ToDoDTO.class);
         when(toDoService.delete(argumentCaptor.capture())).thenReturn(true);
-        ResponseEntity response = ResponseEntity.noContent().build();
 
         mockMvc.perform(delete("/todos")
                 .contentType(APPLICATION_JSON)
                 .content("""
                          {"id":1}
-                        """)).andExpect(MockMvcResultMatchers.status().is(204));
+                        """))
+                .andExpect(status().is(204));
 
+    }
+
+    @Test
+    void deleteToDo_idNotInDatabase_returnsNotFoundMessage() throws Exception{
+        ArgumentCaptor<ToDoDTO> argumentCaptor = ArgumentCaptor.forClass(ToDoDTO.class);
+        when(toDoService.delete(argumentCaptor.capture())).thenReturn(false);
+
+        mockMvc.perform(delete("/todos")
+                        .contentType(APPLICATION_JSON)
+                        .content("""
+                         {"id":1}
+                        """))
+                .andExpect(status().is(404));
     }
 
 }
