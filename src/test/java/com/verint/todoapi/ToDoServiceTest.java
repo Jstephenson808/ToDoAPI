@@ -7,6 +7,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.dao.EmptyResultDataAccessException;
 
 import java.util.List;
 
@@ -14,8 +15,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.mapstruct.factory.Mappers.getMapper;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class ToDoServiceTest {
@@ -69,4 +69,17 @@ class ToDoServiceTest {
         ToDoDTO createdToDo = toDoService.create(null);
         assertThat(createdToDo, is(nullValue()));
     }
+
+    @Test
+    void delete_toDoExists_shouldReturnTrue() {
+        assertThat(toDoService.delete(1L), is(true));
+    }
+
+    @Test
+    void delete_toDoDoesNotExist_shouldReturnFalse() {
+        doThrow(new EmptyResultDataAccessException(1)).when(toDoRepository).deleteById(1L);
+
+        assertThat(toDoService.delete(1L), is(false));
+    }
+
 }

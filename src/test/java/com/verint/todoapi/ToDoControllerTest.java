@@ -6,10 +6,7 @@ import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.result.HeaderResultMatchers;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.Collections;
 
@@ -17,13 +14,13 @@ import static com.verint.todoapi.ToDoDTOBuilder.generateToDo;
 import static com.verint.todoapi.ToDoDTOMatcher.toDoDTO;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
 @WebMvcTest
@@ -37,21 +34,21 @@ class ToDoControllerTest {
 
 
     @Test
-    void getToDos_callsService() throws Exception {
+    void getAll_callsService() throws Exception {
         mockMvc.perform(get("/todos"));
 
         verify(toDoService).getAll();
     }
 
     @Test
-    void getToDos_noToDos_emptyArray() throws Exception {
+    void getAll_noToDos_emptyArray() throws Exception {
         when(toDoService.getAll()).thenReturn(Collections.emptyList());
 
         mockMvc.perform(get("/todos")).andExpect(content().json("[]"));
     }
 
     @Test
-    void postToDo_callsServiceCreateWithDTOGiven() throws Exception{
+    void post_callsServiceCreateWithDTOGiven() throws Exception{
         ArgumentCaptor<ToDoDTO> toDoCaptor = ArgumentCaptor.forClass(ToDoDTO.class);
         String jsonString = """
                            {"name":"James S"}
@@ -66,57 +63,49 @@ class ToDoControllerTest {
     }
 
     @Test
-    void postToDo_returnsToDoDTO() throws Exception{
+    void post_returnsToDoDTO() throws Exception{
         ArgumentCaptor<ToDoDTO> argumentCaptor = ArgumentCaptor.forClass(ToDoDTO.class);
 
         when(toDoService.create(argumentCaptor.capture())).thenReturn(generateToDo(1L,"James S"));
 
         mockMvc.perform(post("/todos")
-                .contentType(APPLICATION_JSON).content("""
-                                                        {"name":"James S"}
-                                                        """))
-                .andExpect(content().json("""
-                                             {"id":1,"name":"James S"}
-                                            """));
-    }
-
-    @Test
-    void deleteToDo_callServiceDeleteWithIdGiven() throws Exception{
-        ArgumentCaptor<ToDoDTO> argumentCaptor = ArgumentCaptor.forClass(ToDoDTO.class);
-        when(toDoService.delete(argumentCaptor.capture())).thenReturn(true);
-
-        mockMvc.perform(delete("/todos")
-                        .param("id","1"));
-
-        verify(toDoService).delete(argumentCaptor.capture());
-        assertThat(argumentCaptor.getValue(), is(toDoDTO(1L,null)));
-    }
-
-    @Test
-    void deleteToDo_idInDatabase_returnsSuccessMessage() throws Exception{
-        ArgumentCaptor<ToDoDTO> argumentCaptor = ArgumentCaptor.forClass(ToDoDTO.class);
-        when(toDoService.delete(argumentCaptor.capture())).thenReturn(true);
-
-        mockMvc.perform(delete("/todos")
                 .contentType(APPLICATION_JSON)
                 .content("""
-                         {"id":1}
-                        """))
-                .andExpect(status().is(204));
+                           {"name": "James S"}
+                         """))
+                .andExpect(content()
+                .json("""
+                                {
+                                  "id": 1,
+                                  "name": "James S"
+                                }
+                                """));
+    }
+
+    @Test
+    void delete_callServiceDeleteWithIdGiven() throws Exception{
+        when(toDoService.delete(any())).thenReturn(true);
+
+        mockMvc.perform(delete("/todos/1"));
+
+        verify(toDoService).delete(1L);
+    }
+
+    @Test
+    void delete_idInDatabase_returnsSuccessMessage() throws Exception{
+        when(toDoService.delete(any())).thenReturn(true);
+
+        mockMvc.perform(delete("/todos/1"))
+                .andExpect(status().isNoContent());
 
     }
 
     @Test
-    void deleteToDo_idNotInDatabase_returnsNotFoundMessage() throws Exception{
-        ArgumentCaptor<ToDoDTO> argumentCaptor = ArgumentCaptor.forClass(ToDoDTO.class);
-        when(toDoService.delete(argumentCaptor.capture())).thenReturn(false);
+    void delete_idNotInDatabase_returnsNotFoundMessage() throws Exception{
+        when(toDoService.delete(any())).thenReturn(false);
 
-        mockMvc.perform(delete("/todos")
-                        .contentType(APPLICATION_JSON)
-                        .content("""
-                         {"id":1}
-                        """))
-                .andExpect(status().is(404));
+        mockMvc.perform(delete("/todos/1"))
+                .andExpect(status().isNotFound());
     }
 
 }
