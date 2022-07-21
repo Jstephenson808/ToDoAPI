@@ -86,10 +86,7 @@ class ToDoControllerTest {
         when(toDoService.delete(argumentCaptor.capture())).thenReturn(true);
 
         mockMvc.perform(delete("/todos")
-                .contentType(APPLICATION_JSON)
-                .content("""
-                         {"id":1}
-                        """));
+                        .param("id","1"));
 
         verify(toDoService).delete(argumentCaptor.capture());
         assertThat(argumentCaptor.getValue(), is(toDoDTO(1L,null)));
