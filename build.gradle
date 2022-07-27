@@ -60,6 +60,7 @@ jacocoTestCoverageVerification {
 }
 
 dependencies {
+    implementation 'junit:junit:4.13.1'
     compileOnly 'org.projectlombok:lombok'
 
     implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -74,6 +75,7 @@ dependencies {
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.1.Final'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'io.rest-assured:rest-assured'
 
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
 }
