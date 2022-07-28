@@ -38,6 +38,24 @@ paths:
               schema:
                 $ref: '#/components/schemas/ToDo'
 
+  /todos/{id}:
+    delete:
+      operationId: deleteToDo
+      tags:
+        - todos
+      description: delete todo with provided id from database
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: todo deleted
+        '404':
+          description: todo not found
 
 
 components:

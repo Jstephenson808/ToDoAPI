@@ -37,7 +37,3 @@ out/
 
 ### VS Code ###
 .vscode/
-
-### DataBase ###
-/h2Database.mv.db
-/h2Database.trace.db
