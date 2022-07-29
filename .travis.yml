@@ -12,3 +12,5 @@ deploy:
   app: fela-kuti
   on:
     branch: main
+after_deploy:
+  - ./gradlew integrationTest -D url='https://int-test-todo-verint.herokuapp.com'
