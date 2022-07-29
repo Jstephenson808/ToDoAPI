@@ -3,14 +3,15 @@ package com.verint.todoapi;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.hamcrest.Matchers;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
 
 public class ToDoIntegrationTest {
 
-    @Before
+    @BeforeAll
     public void config(){
         if(System.getenv("url") == null){
             RestAssured.baseURI = "http://localhost:8080";
