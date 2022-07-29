@@ -10,20 +10,21 @@ import static io.restassured.RestAssured.given;
 
 public class ToDoIntegrationTest {
 
-    private final static String BASE_URI = "http://localhost";
-
-    private int port = 8080;
-
     @Before
     public void config(){
-        RestAssured.baseURI = BASE_URI;
-        RestAssured.port = port;
+        if(System.getenv("url") == null){
+            RestAssured.baseURI = "http://localhost:8080";
+        }
+        else{
+            RestAssured.baseURI = System.getenv("url");
+        }
+
     }
 
     @Test
     void postRequest_ReturnCreatedToDo(){
         given()
-                .port(port).contentType(ContentType.JSON)
+                .contentType(ContentType.JSON)
                 .body("""
                       {"name":"Post Test"}
                       """)
@@ -36,31 +37,28 @@ public class ToDoIntegrationTest {
     @Test
     void getRequest_ReturnToDos() {
         given()
-                .port(port).contentType(ContentType.JSON)
+                .contentType(ContentType.JSON)
                 .body("""
                       {"name":"Get Test"}
                       """)
                 .when().post("/todos");
 
         given()
-                .port(port)
                 .when().get("/todos")
                 .then().assertThat().statusCode(200)
                 .body("id", Matchers.hasItem(1))
                 .body("name", Matchers.hasItem("Get Test"));
     }
 
-    //after do get all and check
     @Test
     void delete_ToDoExists_SuccessCode(){
         given()
-                .port(port).contentType(ContentType.JSON)
+                .contentType(ContentType.JSON)
                 .body("""
                       {"name":"Get Test"}
                       """)
                 .when().post("/todos");
         given()
-                .port(port)
                 .when().delete("/todos/1")
                 .then().assertThat().statusCode(204);
     }
