@@ -5,25 +5,14 @@ import io.restassured.http.ContentType;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.server.LocalServerPort;
 
 import static io.restassured.RestAssured.given;
-import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 
-
-// don't run when gradle build is run
-// create new gradle build tests
-// pass env variables from arguments in travis.yml
-// create new dir call integration tests and then they will be kept away from gradle build tasks
-
-@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class ToDoIntegrationTest {
 
     private final static String BASE_URI = "http://localhost";
 
-    @LocalServerPort
-    private int port;
+    private int port = 8080;
 
     @Before
     public void config(){

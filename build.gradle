@@ -116,17 +116,6 @@ task integrationTest(type: Test){
     outputs.upToDateWhen { false }
 }
 
-task printSourceSetInformation(){
-    doLast{
-        sourceSets.each { srcSet ->
-            println "["+srcSet.name+"]"
-            print "-->Source directories: "+srcSet.allJava.srcDirs+"\n"
-            print "-->Output directories: "+srcSet.output.classesDirs.files+"\n"
-            println ""
-        }
-    }
-}
-
 compileJava.dependsOn('processSpring')
 build.dependsOn jacocoTestCoverageVerification
 check.dependsOn integrationTest
