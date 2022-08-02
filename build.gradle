@@ -121,5 +121,5 @@ task integrationTest(type: Test){
 
 compileJava.dependsOn('processSpring')
 build.dependsOn jacocoTestCoverageVerification
-check.dependsOn integrationTest
+//check.dependsOn integrationTest
 integrationTest.mustRunAfter test
