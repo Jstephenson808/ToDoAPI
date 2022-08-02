@@ -113,6 +113,7 @@ openapiProcessor {
 }
 
 task integrationTest(type: Test){
+    useJUnitPlatform()
     testClassesDirs = sourceSets.integrationTest.output.classesDirs
     classpath = sourceSets.integrationTest.runtimeClasspath
     outputs.upToDateWhen { false }
