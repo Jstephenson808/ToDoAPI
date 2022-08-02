@@ -13,4 +13,4 @@ deploy:
   on:
     branch: main
 after_deploy:
-  - ./gradlew clean integrationTest -D url=https://int-test-todo-verint.herokuapp.com
+  - ./gradlew clean integrationTest --args='--url=https://int-test-todo-verint.herokuapp.com'
