@@ -1,0 +1,13 @@
+{
+  "name": "To Do API",
+  "description": "Handles backend for todo application",
+  "success_url": "/todos",
+  "addons": [
+    {
+      "plan": "heroku-postgresql:hobby-dev",
+      "options": {
+        "version": "9.5"
+      }
+    }
+  ]
+}
