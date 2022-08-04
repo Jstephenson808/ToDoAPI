@@ -12,6 +12,6 @@ deploy:
   app: fela-kuti
   on:
     branch: main
-after_deploy:
+after_script:
   - heroku --app int-test-todo-verint pg:reset DATABASE_URL --confirm int-test-todo-verint
   - ./gradlew clean integrationTest
