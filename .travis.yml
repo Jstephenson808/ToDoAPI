@@ -14,4 +14,4 @@ deploy:
     branch: main
 after_deploy:
   - heroku --app int-test-todo-verint pg:reset DATABASE_URL --confirm int-test-todo-verint
-  - ./gradlew clean integrationTest -Durl=https://int-test-todo-verint.herokuapp.com
+  - ./gradlew clean integrationTest
