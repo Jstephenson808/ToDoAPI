@@ -17,11 +17,11 @@ public class ToDoIntegrationTest {
 
     @BeforeAll
     public static void config(){
-        if(System.getenv("url") == null){
+       if(System.getProperty("url").equals("")){
             RestAssured.baseURI = "http://localhost:8080";
         }
         else{
-            RestAssured.baseURI = System.getenv("url");
+            RestAssured.baseURI = System.getProperty("url");
         }
         startId = given()
                                 .contentType(ContentType.JSON)
