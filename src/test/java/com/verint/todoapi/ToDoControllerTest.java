@@ -109,8 +109,8 @@ class ToDoControllerTest {
     }
 
     @Test
-    void patch_idInDatabase_returnsSuccessMessageAndNewToDo() throws Exception{
-        when(toDoService.edit(any(),any())).thenReturn(ToDoDTOBuilder.builder().id(1).name("James S").build());
+    void patch_idInDatabase_returnsSuccessMessage() throws Exception{
+        when(toDoService.edit(any(),any())).thenReturn(true);
 
         mockMvc.perform(patch("/todos/1")
                 .contentType(APPLICATION_JSON)
@@ -118,15 +118,7 @@ class ToDoControllerTest {
                          {"name": "James S"}
                          """))
                 .andExpect(
-                        status().is2xxSuccessful())
-                .andExpect(
-                        content()
-                        .json("""
-                                        {
-                                        "id": 1,
-                                        "name": "James S"
-                                        }
-                                        """));
+                        status().isNoContent());
     }
 
 }

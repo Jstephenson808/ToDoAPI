@@ -74,12 +74,8 @@ paths:
             schema:
               $ref: '#/components/schemas/ToDo'
       responses:
-        200:
+        204:
           description: todo edited successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ToDo'
         404:
           description: todo not found
 

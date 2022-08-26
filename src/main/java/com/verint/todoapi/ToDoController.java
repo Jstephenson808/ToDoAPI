@@ -41,8 +41,9 @@ public class ToDoController implements TodosApi {
     }
 
     @Override
-    public ResponseEntity<ToDoDTO> editToDo(Long id, ToDoDTO body) {
-        return ResponseEntity.ok(toDoService.edit(id,body));
+    public ResponseEntity<Void> editToDo(Long id, ToDoDTO body) {
+        return ResponseEntity.noContent().build();
     }
+
 
 }
