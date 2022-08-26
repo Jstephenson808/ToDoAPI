@@ -40,4 +40,9 @@ public class ToDoController implements TodosApi {
         return response;
     }
 
+    @Override
+    public ResponseEntity<ToDoDTO> editToDo(Long id, ToDoDTO body) {
+        return null;
+    }
+
 }

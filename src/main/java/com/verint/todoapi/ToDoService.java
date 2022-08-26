@@ -30,4 +30,8 @@ public class ToDoService {
         }
         return true;
     }
+
+    public boolean edit(ToDoDTO editedToDo) {
+        return true;
+    }
 }

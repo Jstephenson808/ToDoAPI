@@ -108,4 +108,13 @@ class ToDoControllerTest {
                 .andExpect(status().isNotFound());
     }
 
+    @Test
+    void patch_idInDatabase_returnsSuccessMessage() throws Exception {
+        when(toDoService.edit(any())).thenReturn(true);
+
+        mockMvc.perform(patch("todos/1").contentType(APPLICATION_JSON).content("""
+                           {"name": "James S"}
+                         """)).andExpect(status().isNoContent());
+    }
+
 }

@@ -56,7 +56,26 @@ paths:
           description: todo deleted
         '404':
           description: todo not found
-
+    patch:
+      operationId: editToDo
+      tags:
+        - todos
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: Update todo with properties to be changed
+        content:
+          application/json:
+            schema:
+                $ref: '#/components/schemas/ToDo'
+      responses:
+        204:
+          description: Updated
 
 components:
   schemas:
