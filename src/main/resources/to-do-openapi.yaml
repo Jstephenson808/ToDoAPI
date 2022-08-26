@@ -37,7 +37,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ToDo'
-
   /todos/{id}:
     delete:
       operationId: deleteToDo
@@ -55,6 +54,33 @@ paths:
         '204':
           description: todo deleted
         '404':
+          description: todo not found
+    patch:
+      operationId: editToDo
+      tags:
+        - todos
+      description: edit todo with provided id to be the object passed in body of request
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ToDo'
+      responses:
+        200:
+          description: todo edited successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ToDo'
+        404:
           description: todo not found
 
 

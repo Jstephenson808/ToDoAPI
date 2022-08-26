@@ -30,4 +30,8 @@ public class ToDoService {
         }
         return true;
     }
+
+    public ToDoDTO edit(Long id, ToDoDTO patchedToDo) {
+        return new ToDoDTO();
+    }
 }

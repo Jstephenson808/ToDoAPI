@@ -14,14 +14,4 @@ public class ToDoDTOBuilder {
         dto.setId(id);
         return dto;
     }
-
-    public static String generateToDoDTOJson(Long id, String name) throws JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper.writeValueAsString(generateToDo(id,name));
-    }
-
-    public static String generateToDoDTOJson(String name) throws JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper.writeValueAsString(builder().name(name).build());
-    }
 }
