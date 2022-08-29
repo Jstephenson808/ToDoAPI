@@ -40,11 +40,13 @@ public class ToDoIntegrationTest {
     void postRequest_ReturnCreatedToDo(){
         given()
                 .contentType(ContentType.JSON)
-                .body("""
-                      {"name":"Post Test"}
-                      """)
-                .when().post("/todos")
-                .then().assertThat().statusCode(200)
+                    .body("""
+                          {"name":"Post Test"}
+                          """)
+                .when()
+                    .post("/todos")
+                .then()
+                    .assertThat().statusCode(200)
                 .body("id", Matchers.equalTo(nextId))
                 .body("name", Matchers.equalTo("Post Test"));
     }
@@ -61,6 +63,21 @@ public class ToDoIntegrationTest {
 
     @Test
     @Order(3)
+    void patch_ToDoExists_SuccessCode(){
+        given()
+                .contentType(ContentType.JSON)
+                    .body("""
+                         {"name": "Patch Test"}
+                         """)
+                .when()
+                    .patch("/todos/" + startId.toString())
+                .then()
+                    .assertThat().statusCode(204);
+
+    }
+
+    @Test
+    @Order(4)
     void delete_ToDoExists_SuccessCode(){
         given()
                 .when().delete("/todos/" + nextId.toString())
