@@ -3,9 +3,12 @@ package com.verint.todoapi;
 import com.verint.todoapi.model.ToDoDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -29,5 +32,18 @@ public class ToDoService {
             return false;
         }
         return true;
+    }
+    //todo map over object and replace name
+    public boolean edit(Long id, ToDoDTO patchedToDo) {
+
+        Optional<ToDo> toDoOptional = toDoRepository.findById(id);
+        if (toDoOptional.isPresent()){
+            ToDo toDo = toDoOptional.get();
+            toDo.setName(patchedToDo.getName());
+            toDoRepository.save(toDo);
+            return true;
+        } else {
+            return false;
+        }
     }
 }

@@ -108,4 +108,30 @@ class ToDoControllerTest {
                 .andExpect(status().isNotFound());
     }
 
+    @Test
+    void patch_callServiceDeleteWithIdGiven() throws Exception{
+        when(toDoService.edit(any(),any())).thenReturn(true);
+
+        mockMvc.perform(patch("/todos/1")
+                .contentType(APPLICATION_JSON)
+                .content("""
+                         {"name": "James S"}
+                         """));
+
+        verify(toDoService).edit(1L,ToDoDTOBuilder.builder().name("James S").build());
+    }
+
+    @Test
+    void patch_idInDatabase_returnsSuccessMessage() throws Exception{
+        when(toDoService.edit(any(),any())).thenReturn(true);
+
+        mockMvc.perform(patch("/todos/1")
+                .contentType(APPLICATION_JSON)
+                .content("""
+                         {"name": "James S"}
+                         """))
+                .andExpect(
+                        status().isNoContent());
+    }
+
 }
